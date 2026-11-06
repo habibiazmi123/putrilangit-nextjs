@@ -32,6 +32,10 @@ import {
 } from "@/components/ui/dialog";
 import CompanySections from "@/components/company-sections";
 import CompanyAbout from "@/components/company-about";
+import HeroProductShowcase from "@/components/hero-product-showcase";
+import SplitText from "@/components/react-bits/split-text";
+import SpotlightCard from "@/components/react-bits/spotlight-card";
+import ScrollButton from "@/components/scroll-button";
 import {
     address,
     categories,
@@ -70,6 +74,21 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
     );
     const profileUrl = `/documents/company-profile-${locale}.pdf`;
     const chooseLocale = (next: Locale) => storeLocale(next);
+
+    useEffect(() => {
+        const previous = window.history.scrollRestoration;
+        window.history.scrollRestoration = "manual";
+        if (window.location.hash) {
+            window.history.replaceState(window.history.state, "", window.location.pathname + window.location.search);
+        }
+        const resetScroll = () => window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+        resetScroll();
+        window.addEventListener("pageshow", resetScroll);
+        return () => {
+            window.removeEventListener("pageshow", resetScroll);
+            window.history.scrollRestoration = previous;
+        };
+    }, []);
 
     useEffect(() => {
         document.documentElement.lang = locale;
@@ -161,29 +180,30 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
 
     return (
         <div className="company-site">
-            <a href="#main" className="skip-link">
+            <ScrollButton targetId="main" className="skip-link">
                 {t("Lewati ke konten", "Skip to content")}
-            </a>
+            </ScrollButton>
             <header className="site-header">
                 <div className="site-container flex h-22 items-center justify-between gap-4">
-                    <a href="#beranda" className="brand" aria-label="PT Putri Langit Sukses — Home">
+                    <ScrollButton targetId="beranda" className="brand" aria-label="PT Putri Langit Sukses — Home">
                         <img src="/images/logo.png" alt="" width="49" height="54" />
                         <span>
                             PUTRI LANGIT SUKSES<small>PUMP & HVAC SOLUTIONS</small>
                         </span>
-                    </a>
+                    </ScrollButton>
                     <nav
                         className="hidden items-center gap-6 lg:flex"
                         aria-label={t("Navigasi utama", "Main navigation")}
                     >
                         {navigation.map((item) => (
-                            <a
+                            <ScrollButton
                                 key={item.id}
-                                href={`#${item.id}`}
+                                targetId={item.id}
                                 className={`nav-link ${activeSection === item.id ? "is-active" : ""}`}
+                                aria-current={activeSection === item.id ? "location" : undefined}
                             >
                                 {tr(item.label)}
-                            </a>
+                            </ScrollButton>
                         ))}
                     </nav>
                     <div className="flex items-center gap-3 sm:gap-6">
@@ -209,10 +229,10 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                 EN
                             </button>
                         </div>
-                        <a href="#kontak" className="button button-green hidden sm:inline-flex">
+                        <ScrollButton targetId="kontak" className="button button-green hidden sm:inline-flex">
                             {t("Hubungi Kami", "Get in Touch")}
                             <ArrowUpRight size={16} />
-                        </a>
+                        </ScrollButton>
                         <button
                             type="button"
                             className="menu-toggle lg:hidden"
@@ -232,23 +252,23 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                         aria-label={t("Navigasi mobile", "Mobile navigation")}
                     >
                         {navigation.map((item) => (
-                            <a
+                            <ScrollButton
                                 key={item.id}
-                                href={`#${item.id}`}
+                                targetId={item.id}
                                 onClick={() => setMenuOpen(false)}
                             >
                                 {tr(item.label)}
                                 <ArrowUpRight size={17} />
-                            </a>
+                            </ScrollButton>
                         ))}
-                        <a href="#kontak" onClick={() => setMenuOpen(false)}>
+                        <ScrollButton targetId="kontak" onClick={() => setMenuOpen(false)}>
                             {t("Hubungi Kami", "Get in Touch")}
                             <ArrowUpRight size={17} />
-                        </a>
+                        </ScrollButton>
                     </nav>
                 )}
             </header>
-            <main id="main">
+            <main id="main" tabIndex={-1}>
                 <section id="beranda" className="hero-section">
                     <div className="site-container hero-grid">
                         <div className="hero-copy">
@@ -261,9 +281,15 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                 AUTHORIZED WILO DEALER
                             </div>
                             <h1>
-                                {t("Solusi andal.", "Reliable solutions.")}
+                                <SplitText
+                                    text={t("Solusi andal.", "Reliable solutions.")}
+                                />
                                 <br />
-                                <span>{t("Kinerja optimal.", "Optimal performance.")}</span>
+                                <SplitText
+                                    text={t("Kinerja optimal.", "Optimal performance.")}
+                                    className="hero-title-accent"
+                                    startDelay={0.18}
+                                />
                             </h1>
                             <p className="hero-description">
                                 {t(
@@ -272,10 +298,10 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                 )}
                             </p>
                             <div className="mt-8 flex flex-wrap gap-3">
-                                <a href="#produk" className="button button-green">
+                                <ScrollButton targetId="produk" className="button button-green">
                                     {t("Temukan Solusi Anda", "Find Your Solution")}
                                     <ArrowUpRight size={18} />
-                                </a>
+                                </ScrollButton>
                                 <a href={profileUrl} download className="button button-outline">
                                     <ArrowDownToLine size={17} />
                                     Company Profile
@@ -312,41 +338,7 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                 <span className="mini-line" />
                                 ENGINEERED FOR BETTER PERFORMANCE
                             </div>
-                            <div className="hero-product-card">
-                                <div className="flex items-center justify-between">
-                                    <span className="eyebrow !text-[9px] !tracking-[.13em]">
-                                        {t(
-                                            "TEKNOLOGI YANG MENGGERAKKAN",
-                                            "TECHNOLOGY THAT MOVES YOU",
-                                        )}
-                                    </span>
-                                    <span className="wilo-wordmark !text-3xl">wilo</span>
-                                </div>
-                                <div className="hero-pump-row">
-                                    <img
-                                        src="/images/atmos-giga-n.webp"
-                                        alt="Wilo Atmos GIGA-N"
-                                        width="262"
-                                        height="155"
-                                    />
-                                    <div>
-                                        <span>Wilo–Atmos GIGA-N</span>
-                                        <p>
-                                            {t(
-                                                "Presisi. Efisien. Andal.",
-                                                "Precise. Efficient. Reliable.",
-                                            )}
-                                        </p>
-                                    </div>
-                                </div>
-                                <a
-                                    href="#produk"
-                                    aria-label={t("Jelajahi produk Wilo", "Explore Wilo products")}
-                                    className="round-arrow"
-                                >
-                                    <ArrowUpRight size={21} />
-                                </a>
-                            </div>
+                            <HeroProductShowcase locale={locale} />
                             <div className="hero-caption">
                                 <span>BUILDING SERVICES · WATER MANAGEMENT · INDUSTRY</span>
                                 <span>WILO / PLS</span>
@@ -360,10 +352,10 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                 "INTEGRATED SOLUTIONS, FROM START TO FINISH.",
                             )}
                         </span>
-                        <a href="#tentang">
+                        <ScrollButton targetId="tentang">
                             {t("Kenali kami lebih dekat", "Get to know us")}
                             <ArrowDown size={15} />
-                        </a>
+                        </ScrollButton>
                     </div>
                 </section>
                 <div className="trust-strip">
@@ -486,8 +478,7 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                             (product) => product.category === productCategory.id,
                                         )
                                         .map((product) => (
-                                            <button
-                                                type="button"
+                                            <SpotlightCard
                                                 className="product-card group"
                                                 key={product.name}
                                                 onClick={() => setSelectedProduct(product)}
@@ -516,7 +507,7 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                                         <ArrowUpRight size={19} />
                                                     </span>
                                                 </div>
-                                            </button>
+                                            </SpotlightCard>
                                         ))}
                                 </div>
                             </div>
@@ -705,24 +696,24 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
             <footer className="site-footer" data-scroll-reveal="true">
                 <div className="site-container">
                     <div className="footer-top">
-                        <a href="#beranda" className="brand">
+                        <ScrollButton targetId="beranda" className="brand">
                             <img src="/images/logo.png" alt="" width="47" height="52" />
                             <span>
                                 PUTRI LANGIT SUKSES<small>AUTHORIZED WILO DEALER</small>
                             </span>
-                        </a>
+                        </ScrollButton>
                         <nav aria-label={t("Navigasi footer", "Footer navigation")}>
                             {navigation.map((item) => (
-                                <a key={item.id} href={`#${item.id}`}>
+                                <ScrollButton key={item.id} targetId={item.id}>
                                     {tr(item.label)}
-                                </a>
+                                </ScrollButton>
                             ))}
-                            <a href="#kontak">{t("Kontak", "Contact")}</a>
+                            <ScrollButton targetId="kontak">{t("Kontak", "Contact")}</ScrollButton>
                         </nav>
-                        <a href="#beranda" className="back-top">
+                        <ScrollButton targetId="beranda" className="back-top">
                             {t("Kembali ke atas", "Back to top")}
                             <ArrowUp size={17} />
-                        </a>
+                        </ScrollButton>
                     </div>
                     <div className="footer-bottom">
                         <span>

@@ -3,6 +3,7 @@
 import { ArrowDown, ArrowRight, Check } from "lucide-react";
 
 import { mission, translate, type Locale, type Translation } from "@/data/company";
+import ScrollButton from "@/components/scroll-button";
 
 const team: { name: string; role: Translation; image: string }[] = [
     { name: "Putri Mey", role: ["Direktur", "Director"], image: "putri-mey" },
@@ -64,14 +65,14 @@ export default function CompanyAbout({ locale }: { locale: Locale }) {
                                 "Explore our company profile",
                             )}
                         >
-                            <a href="#visi-misi" className="text-link">
+                            <ScrollButton targetId="visi-misi" className="text-link">
                                 {t("Visi & Misi", "Vision & Mission")}
                                 <ArrowDown size={17} />
-                            </a>
-                            <a href="#tim" className="text-link">
+                            </ScrollButton>
+                            <ScrollButton targetId="tim" className="text-link">
                                 {t("Tim Kami", "Our Team")}
                                 <ArrowRight size={17} />
-                            </a>
+                            </ScrollButton>
                         </nav>
                     </div>
                 </div>
