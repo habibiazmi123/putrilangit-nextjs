@@ -84,7 +84,7 @@ export default function CompanyAbout({ locale }: { locale: Locale }) {
                     <h3 className="about-subheading">{t("Visi & Misi", "Vision & Mission")}</h3>
                     <div className="vision-mission-grid">
                         <article className="vision-card">
-                            <span className="eyebrow">01 / {t("VISI", "VISION")}</span>
+                            <span className="eyebrow">{t("VISI", "VISION")}</span>
                             <h4>{t("Visi Kami", "Our Vision")}</h4>
                             <p>
                                 {t(
@@ -94,7 +94,7 @@ export default function CompanyAbout({ locale }: { locale: Locale }) {
                             </p>
                         </article>
                         <article className="mission-card">
-                            <span className="eyebrow">02 / {t("MISI", "MISSION")}</span>
+                            <span className="eyebrow">{t("MISI", "MISSION")}</span>
                             <h4>{t("Misi Kami", "Our Mission")}</h4>
                             <ul>
                                 {mission.map((item) => (

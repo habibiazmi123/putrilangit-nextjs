@@ -2,7 +2,6 @@
 
 import {
     ArrowDownToLine,
-    ArrowRight,
     ArrowUpRight,
     BadgeCheck,
     Check,
@@ -188,18 +187,14 @@ export default function CompanySections({ locale }: { locale: Locale }) {
                             )}
                         </p>
                     </div>
-                    <div className="process-grid">
-                        {process.map((step, i) => (
-                            <div key={step.title} className="process-step">
-                                <div className="process-step-top">
-                                    <span>0{i + 1}</span>
-                                    {i < process.length - 1 && <ArrowRight size={18} />}
-                                </div>
+                    <ol className="process-grid">
+                        {process.map((step) => (
+                            <li key={step.title} className="process-step">
                                 <h3>{step.title}</h3>
                                 <p>{tr(step.description)}</p>
-                            </div>
+                            </li>
                         ))}
-                    </div>
+                    </ol>
                 </div>
             </section>
 

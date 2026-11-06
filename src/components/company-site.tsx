@@ -608,7 +608,6 @@ export default function Welcome({ locale: initialLocale = "id" }: { locale?: Loc
                                     open={i === 0 ? true : undefined}
                                 >
                                     <summary>
-                                        <span className="service-number">0{i + 1}</span>
                                         <h3>{service.title}</h3>
                                         <span className="accordion-icon">
                                             <ArrowUpRight size={20} />
