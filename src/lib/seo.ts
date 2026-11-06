@@ -63,8 +63,12 @@ export function localeMetadata(locale: LocaleKey): Metadata {
             images: [`${siteUrl}/images/social-preview.jpg`],
         },
         icons: {
-            icon: [{ url: "/images/icon.png", type: "image/png" }],
-            apple: "/images/icon.png",
+            icon: [
+                { url: "/favicon.svg?v=pls", type: "image/svg+xml", sizes: "any" },
+                { url: "/favicon.ico?v=pls", type: "image/x-icon", sizes: "16x16 32x32 48x48 64x64" },
+            ],
+            shortcut: "/favicon.ico?v=pls",
+            apple: [{ url: "/apple-touch-icon.png?v=pls", sizes: "180x180", type: "image/png" }],
         },
     };
 }
