@@ -1,0 +1,20 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "./company.css";
+
+@source "../components";
+@source "../app";
+
+@theme {
+    --font-sans: "Instrument Sans", ui-sans-serif, system-ui, sans-serif;
+}
+
+:root {
+    color-scheme: light;
+}
+
+body {
+    margin: 0;
+    background: #fafbf8;
+    color: #172e29;
+}
