@@ -130,7 +130,6 @@ export default function CompanySections({ locale }: { locale: Locale }) {
                                     aria-controls={`industry-${i}`}
                                     onClick={() => setSelectedIndustry(i)}
                                 >
-                                    <span>0{i + 1}</span>
                                     <span>{item.title}</span>
                                     <ArrowUpRight size={19} />
                                 </button>
@@ -351,9 +350,8 @@ export default function CompanySections({ locale }: { locale: Locale }) {
                         {t("Nilai Perusahaan", "Company Values")}
                     </h2>
                     <div className="values-grid">
-                        {values.map((value, i) => (
+                        {values.map((value) => (
                             <div key={value.title}>
-                                <span>0{i + 1}</span>
                                 <h3>{value.title}</h3>
                                 <p>{tr(value.description)}</p>
                             </div>
